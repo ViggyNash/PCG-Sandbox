@@ -29,6 +29,8 @@ public class RandSpline : MonoBehaviour {
 
         SetPoints();
 
+        spline.Loop = true;
+
         list = AddRoads();
 
     }
