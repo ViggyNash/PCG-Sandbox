@@ -18,7 +18,7 @@ public class RandSpline : MonoBehaviour {
     public bool lookForward;
     public Transform[] items;
 
-    public GameObject actor;
+    public Transform[] list;
 
     // Use this for initialization
     void Awake()
@@ -29,10 +29,7 @@ public class RandSpline : MonoBehaviour {
 
         SetPoints();
 
-        Transform[] list = AddRoads();
-
-        actor = Instantiate(actor);
-        actor.transform.position = list[0].position + Vector3.up * 2;
+        list = AddRoads();
 
     }
 
@@ -55,8 +52,8 @@ public class RandSpline : MonoBehaviour {
         {
             Vector3 pos = UnityEngine.Random.insideUnitSphere * splineRadius/2;
             pos += pos;
-            randPoint = pos + new Vector3(splineIntervalScaling * i, 0
-                            , UnityEngine.Random.Range(-splineIntervalScaling, splineIntervalScaling));
+            randPoint = pos + new Vector3(UnityEngine.Random.Range(-splineIntervalScaling, splineIntervalScaling)
+                                        , 0 , -splineIntervalScaling * i);
             randPoint.y = randPoint.y / heightScaling;
             spline.points[i] = randPoint;
             spline.SetControlPointMode(i, BezierControlPointMode.Mirrored);
