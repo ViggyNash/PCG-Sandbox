@@ -145,7 +145,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
 --- !u!1 &245411982
 GameObject:
   m_ObjectHideFlags: 0
@@ -228,15 +228,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   randomSegmentNum: 0
   segments: 4
-  splineIntervalScaling: 20
-  splineRadius: 15
-  lengthScaling: 0.15
-  heightScaling: 5
+  allowHeight: 0
+  splineIntervalScaling: 30
+  splineRadius: 5
+  lengthScaling: 0.1
+  heightScaling: 0.5
   frequency: 500
   lookForward: 0
   items:
   - {fileID: 495128, guid: 8d81c73565b4b454c9fbdca7fa88d51b, type: 2}
   list: []
+  fixedSeed: 0
+  seed: 222
 --- !u!114 &430196716
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -266,7 +269,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
 --- !u!1001 &906686281
 Prefab:
   m_ObjectHideFlags: 0
@@ -329,6 +332,35 @@ Prefab:
     - target: {fileID: 171854, guid: 53369952c6148d44f87e7431c00387f8, type: 2}
       propertyPath: m_TagString
       value: Finish
+      objectReference: {fileID: 0}
+    - target: {fileID: 11403216, guid: 53369952c6148d44f87e7431c00387f8, type: 2}
+      propertyPath: DirectionVector
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 11403216, guid: 53369952c6148d44f87e7431c00387f8, type: 2}
+      propertyPath: camera
+      value: 
+      objectReference: {fileID: 926798516}
+    - target: {fileID: 11403216, guid: 53369952c6148d44f87e7431c00387f8, type: 2}
+      propertyPath: fixedSeed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11403216, guid: 53369952c6148d44f87e7431c00387f8, type: 2}
+      propertyPath: seed
+      value: 123
+      objectReference: {fileID: 0}
+    - target: {fileID: 13586240, guid: 53369952c6148d44f87e7431c00387f8, type: 2}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: b0b699c17334f084e8c66afed1fa5ea4,
+        type: 2}
+    - target: {fileID: 5404292, guid: 53369952c6148d44f87e7431c00387f8, type: 2}
+      propertyPath: m_Drag
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5404292, guid: 53369952c6148d44f87e7431c00387f8, type: 2}
+      propertyPath: m_AngularDrag
+      value: 0.1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 53369952c6148d44f87e7431c00387f8, type: 2}

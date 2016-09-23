@@ -6,6 +6,8 @@ public class Controller : MonoBehaviour {
     Rigidbody rbody;
     public float forceScale;
 
+    public Transform camera;
+
     public GameObject road;
     RandSpline spline;
 
@@ -25,21 +27,22 @@ public class Controller : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
+
         if (Input.GetKey(KeyCode.UpArrow))
         {
-            rbody.AddForce(Vector3.forward * forceScale);
+            rbody.AddForce(Vector3.ProjectOnPlane(camera.transform.forward, Vector3.up) * forceScale);
         }
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-            rbody.AddForce(Vector3.left * forceScale);
+            rbody.AddForce(-Vector3.ProjectOnPlane(camera.transform.right, Vector3.up) * forceScale);
         }
         if (Input.GetKey(KeyCode.RightArrow))
         {
-            rbody.AddForce(Vector3.right * forceScale);
+            rbody.AddForce(Vector3.ProjectOnPlane(camera.transform.right, Vector3.up) * forceScale);
         }
         if (Input.GetKey(KeyCode.DownArrow))
         {
-            rbody.AddForce(Vector3.back * forceScale);
+            rbody.AddForce(-Vector3.ProjectOnPlane(camera.transform.forward, Vector3.up) * forceScale);
         }
     }
 

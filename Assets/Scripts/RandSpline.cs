@@ -9,6 +9,7 @@ public class RandSpline : MonoBehaviour {
     public bool randomSegmentNum;
     public float segments;
 
+    public bool allowHeight;
     public float splineIntervalScaling;
     public float splineRadius;
     public float lengthScaling;
@@ -20,10 +21,21 @@ public class RandSpline : MonoBehaviour {
 
     public Transform[] list;
 
+    public bool fixedSeed;
+    public int seed;
+
     // Use this for initialization
     void Awake()
     {
-        UnityEngine.Random.seed = 3;
+        if (!allowHeight)
+        {
+            heightScaling = 0;
+        }
+        if (fixedSeed)
+        {
+            UnityEngine.Random.seed = seed;
+        }
+        else Debug.Log("Seed = " + UnityEngine.Random.seed);
 
         spline = GetComponent<BezierSpline>();
 
@@ -50,13 +62,18 @@ public class RandSpline : MonoBehaviour {
         }
 
         Vector3 randPoint;
-        for (int i = 0; i < spline.points.Length; i++)
+        int splineLength = spline.points.Length;
+        for (int i = 0; i < splineLength; i++)
         {
-            Vector3 pos = UnityEngine.Random.insideUnitSphere * splineRadius/2;
-            pos += pos;
-            randPoint = pos + new Vector3(UnityEngine.Random.Range(-splineIntervalScaling, splineIntervalScaling)
-                                        , 0 , -splineIntervalScaling * i);
-            randPoint.y = randPoint.y / heightScaling;
+            Vector3 pos = UnityEngine.Random.insideUnitSphere * splineRadius;
+            pos = (pos / 2) + splineRadius / 2 * Vector3.ProjectOnPlane(pos, Vector3.up);
+            /*randPoint = pos + new Vector3(UnityEngine.Random.Range(-splineIntervalScaling, splineIntervalScaling)
+                                    , 0 , -splineIntervalScaling * i);*/
+            randPoint = pos + splineIntervalScaling * new Vector3(Mathf.Sin(Mathf.PI * 2 * ((float)i / splineLength)), 0
+                                                                 , Mathf.Cos(Mathf.PI * 2 * ((float)i / splineLength)));
+            Debug.Log(((float)i / splineLength) + " " + splineIntervalScaling * new Vector3(Mathf.Sin(Mathf.PI * 2 * (i / splineLength)), 0
+                                                                 , Mathf.Cos(Mathf.PI * 2 * (i / splineLength))));
+            randPoint.y = randPoint.y * heightScaling;
             spline.points[i] = randPoint;
             spline.SetControlPointMode(i, BezierControlPointMode.Mirrored);
         }

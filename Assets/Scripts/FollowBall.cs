@@ -7,7 +7,7 @@ public class FollowBall : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        transform.position = actor.transform.position + Vector3.up + Vector3.back * 3;
+        transform.position = actor.transform.position + Vector3.up * 2 + Vector3.back * 3;
 
 	}
 	
