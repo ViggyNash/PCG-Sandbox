@@ -43,7 +43,7 @@ public class RandSpline : MonoBehaviour {
 
         spline.Loop = true;
 
-        list = AddRoads();
+        AddRoads();
 
     }
 
@@ -79,42 +79,57 @@ public class RandSpline : MonoBehaviour {
         }
     }
 
-    private Transform[] AddRoads()
+    Vector3[] vertices;
+    int[] triangles;
+    public Vector3[] points;
+
+    private void AddRoads()
     {
         if (frequency <= 0 || items == null || items.Length == 0)
         {
-            return null;
+            return;
         }
         float stepSize = frequency * items.Length;
         if (spline.Loop || stepSize == 1)
         {
             stepSize = 1f / stepSize;
         }
-        else {
+        else
+        {
             stepSize = 1f / (stepSize - 1);
         }
-        Transform[] segmentList = new Transform[spline.points.Length];
-        
+        points = new Vector3[frequency];
         for (int p = 0, f = 0; f < frequency; f++)
         {
-            for (int i = 0; i < items.Length; i++, p++)
-            {
-                Transform item = Instantiate(items[i]) as Transform;
-                Vector3 position = spline.GetPoint(p * stepSize);
-                item.transform.rotation = Quaternion.LookRotation(spline.GetVelocity(p * stepSize));
-                item.localScale -= new Vector3(0, 0, (spline.GetVelocity(p * stepSize).magnitude * lengthScaling) * item.localScale.x);
-                //Debug.Log((spline.GetVelocity(p * stepSize).magnitude * lengthScaling) * item.localScale.x);
-                item.transform.localPosition = position;
-                if (lookForward)
-                {
-                    item.transform.LookAt(position + spline.GetDirection(p * stepSize));
-                }
-                item.transform.parent = transform;
-                segmentList[i] = item;
-            }
+            points[f] = spline.GetPoint(f * stepSize);
+            points[f + 1] = spline.GetPoint(f * stepSize);
+            
+
+            //GameObject loc = Instantiate(GameObject.CreatePrimitive(PrimitiveType.Cube));
+            //loc.transform.position = position;
         }
-        return segmentList;
     }
 
+    private class Segment
+    {
+        Triangle[] triangles;
+
+        public Segment(Vector3 start, Vector3 end)
+        {
+
+        }
+    }
+
+    private class Triangle
+    {
+        Vector3[] vertices = new Vector3[3];
+
+        public Triangle(Vector3 p1, Vector3 p2, Vector3 p3)
+        {
+            vertices[0] = p1;
+            vertices[1] = p2;
+            vertices[2] = p3;
+        }
+    }
 	
 }

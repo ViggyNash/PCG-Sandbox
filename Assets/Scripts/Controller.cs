@@ -9,12 +9,14 @@ public class Controller : MonoBehaviour {
     public Transform camera;
 
     public GameObject road;
+    Vector3 startPos;
     RandSpline spline;
 
 	// Use this for initialization
 	void Start () {
         spline = road.GetComponent<RandSpline>();
-        transform.position = spline.list[0].transform.position + Vector3.up * 2;
+        startPos = spline.points[0] + Vector3.up * 2;
+        transform.position = startPos;
 
         rbody = GetComponent<Rigidbody>();
 	}
@@ -22,7 +24,7 @@ public class Controller : MonoBehaviour {
     public void Reset()
     {
         rbody.velocity = Vector3.zero;
-        transform.position = spline.list[0].transform.position + Vector3.up * 2;
+        transform.position = startPos;
     }
 	
 	// Update is called once per frame
