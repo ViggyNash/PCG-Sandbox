@@ -228,18 +228,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   randomSegmentNum: 0
   segments: 4
-  allowHeight: 0
+  allowHeight: 1
   splineIntervalScaling: 30
   splineRadius: 5
   lengthScaling: 0.1
   heightScaling: 0.5
   frequency: 500
-  lookForward: 0
-  items:
-  - {fileID: 495128, guid: 8d81c73565b4b454c9fbdca7fa88d51b, type: 2}
   list: []
   fixedSeed: 0
   seed: 222
+  points: []
+  segmentWidth: 0
 --- !u!114 &430196716
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -361,6 +360,10 @@ Prefab:
     - target: {fileID: 5404292, guid: 53369952c6148d44f87e7431c00387f8, type: 2}
       propertyPath: m_AngularDrag
       value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 171854, guid: 53369952c6148d44f87e7431c00387f8, type: 2}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 53369952c6148d44f87e7431c00387f8, type: 2}

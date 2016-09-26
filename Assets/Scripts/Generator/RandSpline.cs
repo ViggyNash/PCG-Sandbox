@@ -16,8 +16,6 @@ public class RandSpline : MonoBehaviour {
     public float heightScaling;
 
     public int frequency;
-    public bool lookForward;
-    public Transform[] items;
 
     public Transform[] list;
 
@@ -71,8 +69,8 @@ public class RandSpline : MonoBehaviour {
                                     , 0 , -splineIntervalScaling * i);*/
             randPoint = pos + splineIntervalScaling * new Vector3(Mathf.Sin(Mathf.PI * 2 * ((float)i / splineLength)), 0
                                                                  , Mathf.Cos(Mathf.PI * 2 * ((float)i / splineLength)));
-            Debug.Log(((float)i / splineLength) + " " + splineIntervalScaling * new Vector3(Mathf.Sin(Mathf.PI * 2 * (i / splineLength)), 0
-                                                                 , Mathf.Cos(Mathf.PI * 2 * (i / splineLength))));
+            //Debug.Log(((float)i / splineLength) + " " + splineIntervalScaling * new Vector3(Mathf.Sin(Mathf.PI * 2 * (i / splineLength)), 0
+            //                                                     , Mathf.Cos(Mathf.PI * 2 * (i / splineLength))));
             randPoint.y = randPoint.y * heightScaling;
             spline.points[i] = randPoint;
             spline.SetControlPointMode(i, BezierControlPointMode.Mirrored);
@@ -83,13 +81,15 @@ public class RandSpline : MonoBehaviour {
     int[] triangles;
     public Vector3[] points;
 
+    public float segmentWidth;
+
     private void AddRoads()
     {
-        if (frequency <= 0 || items == null || items.Length == 0)
+        if (frequency <= 0)
         {
             return;
         }
-        float stepSize = frequency * items.Length;
+        float stepSize = frequency;
         if (spline.Loop || stepSize == 1)
         {
             stepSize = 1f / stepSize;
@@ -99,24 +99,45 @@ public class RandSpline : MonoBehaviour {
             stepSize = 1f / (stepSize - 1);
         }
         points = new Vector3[frequency];
-        for (int p = 0, f = 0; f < frequency; f++)
+        Segment[] segments = new Segment[frequency - 1];
+        Segment newSegment;
+        for (int f = 0; f < frequency - 1; f++)
         {
             points[f] = spline.GetPoint(f * stepSize);
-            points[f + 1] = spline.GetPoint(f * stepSize);
-            
+            points[f + 1] = spline.GetPoint((f + 1) * stepSize);
+
+            newSegment = new Segment(points[f], points[f + 1]
+                                    , spline.GetVelocity(f * stepSize), spline.GetVelocity((f + 1) * stepSize)
+                                    , segmentWidth);
 
             //GameObject loc = Instantiate(GameObject.CreatePrimitive(PrimitiveType.Cube));
             //loc.transform.position = position;
         }
+
+        //newSegment = new Segment(points[frequency], points[0]);
     }
 
     private class Segment
     {
         Triangle[] triangles;
+        Vector3 orthogonalStart;
+        Vector3 orthogonalEnd;
 
-        public Segment(Vector3 start, Vector3 end)
+        //Creates a 4 triangle, 6 point segment
+        public Segment(Vector3 start, Vector3 end, Vector3 vectorStart, Vector3 vectorEnd, float segmentWidth)
         {
+            triangles = new Triangle[4];
 
+            start = Vector3.ProjectOnPlane(start, Vector3.up);
+            end = Vector3.ProjectOnPlane(end, Vector3.up);
+
+            orthogonalStart = Vector3.Cross(vectorStart, Vector3.up).normalized * segmentWidth;
+            orthogonalEnd = Vector3.Cross(vectorEnd, Vector3.up).normalized * segmentWidth;
+
+            triangles[0] = new Triangle(orthogonalStart, orthogonalEnd, start);
+            triangles[1] = new Triangle(start, orthogonalEnd, end);
+            triangles[2] = new Triangle(start, end, -orthogonalEnd);
+            triangles[3] = new Triangle(start, -orthogonalEnd, -orthogonalStart);
         }
     }
 
