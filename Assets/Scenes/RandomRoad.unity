@@ -208,6 +208,8 @@ GameObject:
   - 4: {fileID: 430196717}
   - 114: {fileID: 430196716}
   - 114: {fileID: 430196715}
+  - 33: {fileID: 430196719}
+  - 23: {fileID: 430196718}
   m_Layer: 0
   m_Name: RoadSpline
   m_TagString: Untagged
@@ -229,16 +231,16 @@ MonoBehaviour:
   randomSegmentNum: 0
   segments: 4
   allowHeight: 1
-  splineIntervalScaling: 30
+  splineIntervalScaling: 40
   splineRadius: 5
   lengthScaling: 0.1
   heightScaling: 0.5
   frequency: 500
   list: []
-  fixedSeed: 0
+  fixedSeed: 1
   seed: 222
   points: []
-  segmentWidth: 0
+  segmentWidth: 10
 --- !u!114 &430196716
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -269,6 +271,39 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
+--- !u!23 &430196718
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 430196714}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_Materials:
+  - {fileID: 0}
+  m_SubsetIndices: 
+  m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 1
+  m_ReflectionProbeUsage: 1
+  m_ProbeAnchor: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+--- !u!33 &430196719
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 430196714}
+  m_Mesh: {fileID: 0}
 --- !u!1001 &906686281
 Prefab:
   m_ObjectHideFlags: 0
