@@ -4,10 +4,18 @@ using System.Collections;
 public class FollowBall : MonoBehaviour {
 
     public GameObject actor;
+    public GameObject road;
+
+    public float followDistance;
+    public float verticalOffset;
 
 	// Use this for initialization
 	void Start () {
-        transform.position = actor.transform.position + Vector3.up * 2 + Vector3.back * 3;
+        Vector3 offset = road.GetComponent<RandSpline>().points[0]
+                        - road.GetComponent<RandSpline>().spline.GetVelocity(0).normalized * followDistance
+                        + Vector3.up * verticalOffset;
+
+        transform.position = actor.transform.position + offset;
 
 	}
 	
@@ -16,10 +24,10 @@ public class FollowBall : MonoBehaviour {
 	void FixedUpdate () {
         distance = transform.position - actor.transform.position;
         distance.y = 1f;
-        offset = distance.normalized * 3f;
+        offset = distance.normalized * followDistance;
         //offset = Vector3.back * 3f;
 
-        transform.position = Vector3.Lerp(transform.position, actor.transform.position + offset, .5f);
+        transform.position = Vector3.Lerp(transform.position, actor.transform.position + offset, .2f);
         transform.LookAt(actor.transform);
     }
 }

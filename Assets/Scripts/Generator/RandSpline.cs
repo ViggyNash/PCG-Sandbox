@@ -5,8 +5,9 @@ using System;
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 public class RandSpline : MonoBehaviour {
 
-    private BezierSpline spline;
+    public BezierSpline spline;
     private MeshFilter mesh;
+    private MeshCollider collider;
 
     public bool randomSegmentNum;
     public float segments;
@@ -47,6 +48,9 @@ public class RandSpline : MonoBehaviour {
 
         AddRoads();
 
+        collider = this.gameObject.AddComponent(typeof(MeshCollider)) as MeshCollider;
+        collider.sharedMesh = mesh.mesh;
+
     }
 
     private void SetPoints()
@@ -64,7 +68,33 @@ public class RandSpline : MonoBehaviour {
         }
 
         Vector3 randPoint;
+        Vector3 offset;
         int splineLength = spline.points.Length;
+        for (int i = 0; i < splineLength; i++)
+        {
+            offset = UnityEngine.Random.insideUnitSphere * splineRadius;
+            offset.y *= (offset.x + offset.z)/2 * heightScaling;
+            randPoint = offset  + splineIntervalScaling * new Vector3(Mathf.Sin(Mathf.PI * 2 * ((float)i / splineLength)), 0
+                                                                 , Mathf.Cos(Mathf.PI * 2 * ((float)i / splineLength)));
+            spline.points[i] = randPoint;
+            if (i % 3 != 2)
+            {
+                switch (UnityEngine.Random.Range(1, 4))
+                {
+                    case 1:
+                    case 2:
+                        spline.SetControlPointMode(i, BezierControlPointMode.Aligned);
+                        break;
+                    case 3:
+                    case 4:
+                        spline.SetControlPointMode(i, BezierControlPointMode.Mirrored);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
         //Determine control point locations
        /* for (int i = 0; i < splineLength; i++)
         {
@@ -84,7 +114,7 @@ public class RandSpline : MonoBehaviour {
             }
         }*/
 
-        for (int i = 0; i < splineLength; i++)
+        /*for (int i = 0; i < splineLength; i++)
         {
             Vector3 pos = UnityEngine.Random.insideUnitSphere * splineRadius;
             pos = (pos / 2) + splineRadius / 2 * Vector3.ProjectOnPlane(pos, Vector3.up);
@@ -95,7 +125,7 @@ public class RandSpline : MonoBehaviour {
             randPoint.y = randPoint.y * heightScaling;
             spline.points[i] = randPoint;
             spline.SetControlPointMode(i, BezierControlPointMode.Mirrored);
-        }
+        }*/
     }
 
     public Vector3[] vertices;
@@ -124,7 +154,7 @@ public class RandSpline : MonoBehaviour {
 
         //Initialize arrays
         vertices = new Vector3[3 * frequency];
-        triangles = new int[12 * frequency];
+        triangles = new int[12 * frequency * 2];
         points = new Vector3[frequency];
         vectors = new Vector3[frequency];
         Segment[] segments = new Segment[frequency];
@@ -190,18 +220,36 @@ public class RandSpline : MonoBehaviour {
 
         int baseIndex = vertices.Length - 3 ;
 
-        triangles[triangles.Length - 12] = baseIndex;
-        triangles[triangles.Length - 11] = 0;
-        triangles[triangles.Length - 10] = baseIndex + 1;
-        triangles[triangles.Length - 9] = baseIndex + 1;
-        triangles[triangles.Length - 8] = 0;
-        triangles[triangles.Length - 7] = 1;
-        triangles[triangles.Length - 6] = baseIndex + 1;
-        triangles[triangles.Length - 5] = 1;
-        triangles[triangles.Length - 4] = 2;
-        triangles[triangles.Length - 3] = baseIndex + 1;
-        triangles[triangles.Length - 2] = 2;
-        triangles[triangles.Length - 1] = baseIndex + 2;
+        triangles[triangles.Length / 2 - 12] = baseIndex;
+        triangles[triangles.Length / 2 - 11] = 0;
+        triangles[triangles.Length / 2 - 10] = baseIndex + 1;
+        triangles[triangles.Length / 2 - 9] = baseIndex + 1;
+        triangles[triangles.Length / 2 - 8] = 0;
+        triangles[triangles.Length / 2 - 7] = 1;
+        triangles[triangles.Length / 2 - 6] = baseIndex + 1;
+        triangles[triangles.Length / 2 - 5] = 1;
+        triangles[triangles.Length / 2 - 4] = 2;
+        triangles[triangles.Length / 2 - 3] = baseIndex + 1;
+        triangles[triangles.Length / 2 - 2] = 2;
+        triangles[triangles.Length / 2 - 1] = baseIndex + 2;
+
+        //Add reversed triangles
+        int offset = triangles.Length / 2;
+        for (int i = 0; i < offset; i++)
+        {
+            if(i % 3 == 0)
+            {
+                triangles[offset + i] = triangles[i];
+            }
+            else if(i % 3 == 1)
+            {
+                triangles[offset + i] = triangles[i + 1];
+            }
+            else
+            {
+                triangles[offset + i] = triangles[i - 1];
+            }
+        }
 
     }
 
