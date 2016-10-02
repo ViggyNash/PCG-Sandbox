@@ -235,12 +235,15 @@ MonoBehaviour:
   splineRadius: 5
   lengthScaling: 0.1
   heightScaling: 0.5
-  frequency: 500
+  frequency: 10
   list: []
   fixedSeed: 1
-  seed: 222
+  seed: 200
+  vertices: []
+  triangles: 
   points: []
-  segmentWidth: 10
+  vectors: []
+  segmentWidth: 3
 --- !u!114 &430196716
 MonoBehaviour:
   m_ObjectHideFlags: 0
