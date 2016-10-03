@@ -271,18 +271,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spline: {fileID: 0}
   randomSegmentNum: 0
-  segments: 4
+  segments: 6
   allowHeight: 1
   splineIntervalScaling: 40
   splineRadius: 10
-  lengthScaling: 0.1
   heightScaling: 0.2
-  frequency: 200
+  frequency: 100
   list: []
   fixedSeed: 0
   seed: 200
   vertices: []
   triangles: 
+  uvCoords: []
   points: []
   vectors: []
   segmentWidth: 3
@@ -324,13 +324,13 @@ MeshRenderer:
   m_GameObject: {fileID: 430196714}
   m_Enabled: 1
   m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_ReceiveShadows: 0
   m_Materials:
   - {fileID: 2100000, guid: 068492e84f449804ab8dce2bf5e5032d, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
-  m_ReflectionProbeUsage: 1
+  m_ReflectionProbeUsage: 2
   m_ProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 0
@@ -443,6 +443,14 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 171854, guid: 53369952c6148d44f87e7431c00387f8, type: 2}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2336366, guid: 53369952c6148d44f87e7431c00387f8, type: 2}
+      propertyPath: m_CastShadows
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2336366, guid: 53369952c6148d44f87e7431c00387f8, type: 2}
+      propertyPath: m_ReceiveShadows
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []

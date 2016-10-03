@@ -44,7 +44,7 @@ public class Controller : MonoBehaviour {
         }
         if (Input.GetKey(KeyCode.DownArrow))
         {
-            rbody.AddForce(-Vector3.ProjectOnPlane(camera.transform.forward, Vector3.up) * forceScale);
+            rbody.AddForce(-Vector3.ProjectOnPlane(camera.transform.forward, Vector3.up) * forceScale * 2);
         }
     }
 

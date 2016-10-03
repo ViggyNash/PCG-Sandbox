@@ -15,7 +15,6 @@ public class RandSpline : MonoBehaviour {
     public bool allowHeight;
     public float splineIntervalScaling;
     public float splineRadius;
-    public float lengthScaling;
     public float heightScaling;
 
     public int frequency;
@@ -57,7 +56,8 @@ public class RandSpline : MonoBehaviour {
     {
         if (randomSegmentNum)
         {
-            segments = Mathf.Floor(UnityEngine.Random.Range(0, 4));
+            segments = Mathf.Floor(UnityEngine.Random.Range(2, 10));
+            splineIntervalScaling *= segments;
         }
         Debug.Log("Num segments: " + segments);
 
@@ -69,11 +69,17 @@ public class RandSpline : MonoBehaviour {
 
         Vector3 randPoint;
         Vector3 offset;
+        Vector3 circularOffset;
+        Vector3 distanceOffset;
         int splineLength = spline.points.Length;
         for (int i = 0; i < splineLength; i++)
         {
-            offset = UnityEngine.Random.insideUnitSphere * splineRadius;
-            offset.y *= (offset.x + offset.z)/2 * heightScaling;
+            circularOffset = UnityEngine.Random.insideUnitSphere * splineRadius;
+            distanceOffset = spline.points[i].normalized;
+            distanceOffset.y = 0;
+            distanceOffset *= UnityEngine.Random.Range(-splineRadius, splineRadius);
+            offset = circularOffset + distanceOffset;
+            offset.y *= (offset.x + offset.z)/4 * heightScaling;
             randPoint = offset  + splineIntervalScaling * new Vector3(Mathf.Sin(Mathf.PI * 2 * ((float)i / splineLength)), 0
                                                                  , Mathf.Cos(Mathf.PI * 2 * ((float)i / splineLength)));
             spline.points[i] = randPoint;
@@ -130,6 +136,7 @@ public class RandSpline : MonoBehaviour {
 
     public Vector3[] vertices;
     public int[] triangles;
+    public Vector2[] uvCoords;
 
     public Vector3[] points;
     public Vector3[] vectors;
@@ -155,6 +162,7 @@ public class RandSpline : MonoBehaviour {
         //Initialize arrays
         vertices = new Vector3[3 * frequency];
         triangles = new int[12 * frequency * 2];
+        uvCoords = new Vector2[3 * frequency];
         points = new Vector3[frequency];
         vectors = new Vector3[frequency];
         Segment[] segments = new Segment[frequency];
@@ -194,7 +202,7 @@ public class RandSpline : MonoBehaviour {
         mesh.mesh = newMesh;
     }
 
-    //Populates "vertices" and "triangles" arrays to prepare for sending to Mesh API
+    //Populates "vertices", "triangles", and "uvCoords" arrays to prepare for sending to Mesh API
     private void initMeshData(Segment[] segments)
     {
 
@@ -250,6 +258,17 @@ public class RandSpline : MonoBehaviour {
                 triangles[offset + i] = triangles[i - 1];
             }
         }
+
+        //Create UV coordinates
+        /*for (int i = 0; i < vertices.Length/6; i++)
+        {
+            uvCoords[(i * 6) + 0] = new Vector2(0, 0);
+            uvCoords[(i * 6) + 1] = new Vector2(.5f, 0);
+            uvCoords[(i * 6) + 2] = new Vector2(1, 0);
+            uvCoords[(i * 6) + 3] = new Vector2(0, 1);
+            uvCoords[(i * 6) + 4] = new Vector2(.5f, 1);
+            uvCoords[(i * 6) + 5] = new Vector2(1, 1);
+        }*/
 
     }
 
